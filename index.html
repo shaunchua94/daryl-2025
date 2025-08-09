@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daryl Birthday 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #000;
+    color: #fdf6e3;
+  }
+  body.background-image::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background:
+      linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)),
+      url('images/background2.jpg') center center / cover no-repeat;
+  }
+  #landing {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    text-align: center;
+    padding: 20px;
+    z-index: 500;
+  }
+  #landing h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #fdf6e3;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+  }
+  #landing button {
+    background: linear-gradient(135deg, #ffb347, #ffcc33);
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    border-radius: 8px;
+    color: #3b2f1e;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+  #landing button:hover {
+    background: linear-gradient(135deg, #ffcc33, #ffb347);
+  }
+  #gifOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 400;
+    opacity: 1;
+    transition: opacity 1s ease;
+  }
+  #gifOverlay img {
+    max-width: 80%;
+    max-height: 80%;
+  }
+  #cardContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 40px 20px 20px; /* extra top padding to avoid cut-off */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    opacity: 0;
+    transform: translateY(30px);
+    pointer-events: none;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    box-sizing: border-box;
+  }
+  #cardContainer.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+  }
+  .card {
+    perspective: 1000px;
+    cursor: pointer;
+    animation: float 4s ease-in-out infinite;
+    flex: 0 1 calc(23% - 20px); /* 4 per row with gaps */
+    max-width: 23%;
+    height: 10vh;
+  }
+  .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+  .card.flipped .card-inner {
+    transform: rotateY(180deg);
+  }
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  .card-front {
+    background: #ffe5b4;
+    color: #3b2f1e;
+    font-weight: bold;
+  }
+  .card-back {
+    background: #fffaf0;
+    color: #3b2f1e;
+    transform: rotateY(180deg);
+    overflow-y: auto;
+  }
+  @media (max-width: 600px) {
+    #cardContainer { 
+      gap: 15px;
+      justify-content: flex-start;
+      padding: 20px;
+    }
+    .card {
+      flex: 0 1 calc(30% - 15px); /* 3 per row with gap */
+      height: 8vh;
+      animation: none;
+    }
+  }
+  #messageOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    color: #fffaf0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: left;
+    z-index: 600;
+  }
+  #messageOverlayContent {
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: #3b2f1e;
+    padding: 20px;
+    border-radius: 12px;
+    position: relative;
+  }
+  #closeOverlay {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5em;
+    background: none;
+    border: none;
+    color: #fffaf0;
+    cursor: pointer;
+  }
+  .navButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 179, 71, 0.8);
+    border: none;
+    padding: 8px 12px;
+    font-size: 1.2em;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+  #prevMsg { left: -60px; }
+  #nextMsg { right: -60px; }
+</style>
+</head>
+<body class="background-image landing">
+
+<div id="landing">
+  <h1>Happy Birthday <br>Daryl!</h1>
+  <button onclick="startApp()">Start</button>
+</div>
+
+<div id="gifOverlay" style="display:none;">
+  <img src="images/tengen.gif" alt="Overlay GIF">
+</div>
+
+<div id="cardContainer">
+  <!-- Cards -->
+  <div class="card" data-name="Baoru" data-message="Blessed birthday, Daryl!!
+
+    I love seeing your heart for people and the way you care so deeply for those around us. I’m 
+    so thankful for your soft heart toward God and how you keep choosing to draw near to Him—it 
+    inspires me and makes me love you even more.
+
+    I still remember a few years ago when we were praying together for open doors for your studies.
+    And now, seeing where God has brought us… it’s such a beautiful reminder of His goodness and 
+    perfect timing. I’m so grateful to be walking this journey with you—through every prayer, every answered promise, every challenge, and every joy.
+
+    Here’s to many more adventures, milestones, and dreams fulfilled together! 🐻">
+    <div class="card-inner"><div class="card-front">Baoru</div><div class="card-back"></div></div>
+  </div>
+
+  <div class="card" data-name="Mav" data-message="Blessed birthday Daryl!
+    You have been a really mature and steady presence in the lg. I always say this i think but 
+    i really gain alot of insights through your sharings. Not sure if it's cos of your profession 
+    ahahaha but I think you are a deeply reflective person who is anchored in Christ! It's been 
+    encouraging to hear how you try your best to walk with God, through the different areas of 
+    your life. I hope and pray that you will continue to stick close to Him as you venture into a new chapter of your 
+    life!
+    
+    So exciting to see you pursue your professional interest even further, though it means you'll 
+    be miles apart from us for 3 years :( I really pray that you will use that time to not just 
+    grow professionally but personally as well! even as a couple. It's not your first time being 
+    abroad so I'm sure you know life can go in any direction, but I hope that this time it'll be 
+    different as you have a church community, and reaffirmed your faith in Christ. 
+
+    Praying for you to remain rooted in Christ regardless of what happens or how busy you may get! 
+    Also praying for this period for you to recalibrate and recharge yourself, HOPEFULLY the pace 
+    of life there would be slower, since you dont have to work haha. 
+
+    Just want to say that we are still here for you, so do ping us or me if you need anything, or
+    even just a prayer. Waiting for you and baoru to come back! Stay safe and take care of
+    yourself!">
+    <div class="card-inner"><div class="card-front">Mav</div><div class="card-back"></div></div>
+  </div>
+
+  <div class="card" data-name="Huiru" data-message="Hello Daryl!
+
+    Happy happy birthday to you!!! Whenever I think about you, I’d always be reminded of that convo 
+    we had about how we might not be the perfect Christians, seeking God as fervently as we hoped for. 
+    I’d then always be very encouraged how your heart is still tender for God, & also be reminded that 
+    God’s mercies are new everyday, & we can fail at things but we are struggling with victory already 
+    won on the Cross for us! 
+
+    This period is probably such an exciting moment for you, & I’m so so excited to see the greater 
+    heights or depths God is going to take you to! I wanna encourage you with this:
+
+
+    For I am convinced that neither death nor life, neither angels nor demons, neither the present nor
+    the future, nor any powers, neither height nor depth, nor anything else in all creation, will be
+    able to separate us from the love of God that is in Christ Jesus our Lord.
+    —Romans 8:38-39
+
+    God’s love will not be less because we’re not as on fire for Him today. His love is based on 
+    His faithfulness & not ours. Take heart my friend! 
+
+    Agape,
+    Anna (Huiru)">
+    <div class="card-inner"><div class="card-front">Huiru</div><div class="card-back"></div></div>
+  </div>
+
+  <div class="card" data-name="Charlene" data-message="blessed birthday daryl! 
+
+    aww, the last birthday to celebrate in sg before you leave for uk :')
+    thankyouu for your hospitality towards the lg, and for serving in ways that you can.
+    appreciate your sharings during lg, and how sometimes you struggle at work or even in your personal 
+    life to listen and hear God's ways for you - but each time, you still place Him first above all :') 
+
+    excited for what's in store for baoru & you as yall prepare to go overseas - the lg may be very far
+    apart physically, and with the difference in time zone, but we're still one community and we'll be 
+    here should yall require any support :') 
+
+    praying that God will be upon you as you prepare for your studies as well, and that He has greater 
+    plans for you; and that you'll be able to find a community to settle in while overseas as well!">
+    <div class="card-inner"><div class="card-front">Charlene</div><div class="card-back"></div></div>
+  </div>
+
+  <div class="card" data-name="Ken" data-message="Happy Birthday, Daryl!
+    Big year ahead — new age, new season, and a whole new adventure overseas. Wishing you peace, 
+    wisdom, and joy as you take on PhD life! Praying over you and BaoRu to find your rhythm, 
+    community, and little moments of grace along the way. You’ve got this 🙌
+
+    The Lord will watch over your coming and going both now and forevermore.” – Psalm 121:8">
+    <div class="card-inner"><div class="card-front">Ken</div><div class="card-back"></div></div>
+  </div>
+
+  <div class="card" data-name="Matt" data-message="Happy birthday Daryl!
+
+    Hope this season of preparation has been kind to you! 
+
+    It’s been a blessing know you through lg! Thanks for serving the lg by always saying yes to 
+    opening your place and booking the facilities for us. Especially the time during boys lg 
+    where you booked the tenpanyaki place, bought, prepared the ingredients yourself and even 
+    cooked for us! ❤️
+
+    Enjoy your bday and can’t wait to catch up with you when you’ve settled down overseas!">
+    <div class="card-inner"><div class="card-front">Matt</div><div class="card-back"></div></div>
+  </div>
+
+  <div class="card" data-name="Georgina" data-message="happy birthday daryl! 🥳🎉🎂🎊 this marks our last physical birthday celebration for you in singapore for awhile.
+
+    thank you for checking in with me multiple times including my emo phase, making sure i’m okay. 
+    so glad that you found a community and hope that you will be able to find one in UK as well.
+
+    continue to grow in Jesus and catch up soon!
+
+    ❤️ love,
+    georgy">
+    <div class="card-inner"><div class="card-front">Georgina</div><div class="card-back"></div></div>
+  </div>
+
+  <div class="card" data-name="Shaun" data-message="Hey Daryl,
+
+    You've come quite a long way, still recall the early days when you were visting Hope. 
+
+    Glad that you found a community to settle down with, and I trust we have added on to each other. You have definitely supported the LG with the counselling side of you, I think it is comforting to hear your comments that uplift people. 
+
+    Although you are making a move, just want to share that I hope we can continue to journey together. Don't know how it will play out, but I guess we'll figure it out one step at a time.
+
+    Trust in Him always!
+
+    Yours in Christ,
+    Shaun">
+    <div class="card-inner"><div class="card-front">Shaun</div><div class="card-back"></div></div>
+  </div>
+
+  <div class="card" data-name="Esther" data-message="Happiest Birthday Daryl! 
+
+    Hope your preparation for the big move is all good! 
+
+    I just want to take this moment to thank you for your heartfelt sharing, especially after the
+    conference, when you spoke about keeping Christ at the center of a relationship and always
+    looking to Him for strength and that “extra” love for our partners. I pray that you and Baoru 
+    will hold on to this truth, uplifting and supporting each other as you embark on this new 
+    milestone together.
+
+    Also, thank you for booking the BBQ pit for our LG—I really really had fun! 
+
+    All the best and may your year be filled with many blessings! 
+
+    Esther ◡̈ ">
+    <div class="card-inner"><div class="card-front">Esther</div><div class="card-back"></div></div>
+  </div>
+
+  <div class="card" data-name="Peng Hui" data-message="Happy birthday Daryl! 
+  
+    Appreciate your openness in sharing about your life and opening your function room for our 
+    gatherings! I pray that even as you and Baoru venture to the unfamiliar land of UK, God will 
+    continue to empower and use you guys in ways that you never imagined. Praying for blessings 
+    and smooth transitions to be with y'all!
+
+    Agape,
+    Penghui">
+    <div class="card-inner"><div class="card-front">Peng nHui</div><div class="card-back"></div></div>
+  </div>
+
+  <div class="card" data-name="Brenda" data-message="HHappy birthday Daryl! 
+  
+    Time flies and you are celebrating your last birthday with us in SG, danggg. Thank you for being
+    a supportive brother in Christ, one who serves the Lg’s needs and to extend your help when we 
+    invite our neighbours as well. May God continue to use you even in your new phase of life. 
+    His wisdom and strength will be upon you! The Lg is always here for you and we will miss 
+    you! 😇
+    
+    Love, 
+    Bren">
+    <div class="card-inner"><div class="card-front">Brenda</div><div class="card-back"></div></div>
+  </div>
+</div>
+
+<div id="messageOverlay">
+  <div id="messageOverlayContent">
+    <button id="closeOverlay">&times;</button>
+    <h2 id="overlayName"></h2>
+    <p id="overlayText"></p>
+    <button class="navButton" id="prevMsg">&#9664;</button>
+    <button class="navButton" id="nextMsg">&#9654;</button>
+  </div>
+</div>
+
+<script>
+function startApp() {
+  document.getElementById('landing').style.display = 'none';
+  const overlay = document.getElementById('gifOverlay');
+  overlay.style.display = 'flex';
+  setTimeout(() => {
+    overlay.style.opacity = 0;
+    setTimeout(() => {
+      overlay.style.display = 'none';
+      const cardContainer = document.getElementById('cardContainer');
+      cardContainer.classList.add('show');
+      setTimeout(() => {
+        confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+      }, 50);
+    }, 350);
+  }, 5000);
+}
+
+const isMobile = window.matchMedia("(max-width: 600px)").matches;
+const cards = document.querySelectorAll('.card');
+let currentIndex = 0;
+
+if (isMobile) {
+  cards.forEach((card, index) => {
+    card.addEventListener('click', () => {
+      currentIndex = index;
+      openMessage(index);
+    });
+  });
+} else {
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.toggle('flipped');
+    });
+    card.tabIndex = 0;
+    card.addEventListener('keypress', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.classList.toggle('flipped');
+      }
+    });
+  });
+}
+
+function openMessage(index) {
+  const card = cards[index];
+  document.getElementById('overlayName').textContent = card.dataset.name;
+  document.getElementById('overlayText').innerHTML = card.dataset.message;
+  document.getElementById('messageOverlay').style.display = 'flex';
+}
+
+document.getElementById('closeOverlay').addEventListener('click', () => {
+  document.getElementById('messageOverlay').style.display = 'none';
+});
+
+document.getElementById('prevMsg').addEventListener('click', () => {
+  currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+  openMessage(currentIndex);
+});
+document.getElementById('nextMsg').addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % cards.length;
+  openMessage(currentIndex);
+});
+</script>
+</body>
+</html>
