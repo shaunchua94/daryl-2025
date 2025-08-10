@@ -402,7 +402,7 @@ function startApp() {
 
   // to force gif to always play from frame 1
   const gif = overlay.querySelector('img');
-  gif.src = `images/zenitsu.gif?t=${Date.now()}`;
+  gif.src = `images/tengen.gif?t=${Date.now()}`;
 
   overlay.style.display = 'flex';
   setTimeout(() => {
@@ -415,7 +415,7 @@ function startApp() {
         confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
       }, 50);
     }, 350);
-  }, 5000);
+  }, 4660);
 }
 
 const isMobile = window.matchMedia("(max-width: 600px)").matches;
